@@ -2,6 +2,10 @@
 
 #define tdAPI extern "C" __declspec(dllexport)
 
-tdAPI void tdSetTimeRate(double v);
+tdAPI void tdSetTimeScale(double v);
+tdAPI double tdGetTimeScale();
 tdAPI void tdSetHooks();
-tdAPI void tdOpenTimeWindow();
+
+tdAPI bool tdOpenTimeWindow();
+tdAPI bool tdCloseTimeWindow();
+tdAPI void tdTimeWindowLoop();

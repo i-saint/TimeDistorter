@@ -2,7 +2,7 @@
 #include "Foundation.h"
 #include "TimeDistorter.h"
 
-static double g_time_rate = 1.0f;
+static double g_time_scale = 1.0f;
 
 
 
@@ -22,7 +22,7 @@ static BOOL QueryPerformanceCounter_hook(LARGE_INTEGER* lpPerformanceCount)
             s_start = s_prev = lpPerformanceCount->QuadPart;
 
         auto diff = lpPerformanceCount->QuadPart - s_prev;
-        s_progress += double(diff) * g_time_rate;
+        s_progress += double(diff) * g_time_scale;
         s_prev = lpPerformanceCount->QuadPart;
 
         auto time_scaled = s_start + (LONGLONG)s_progress;
@@ -56,7 +56,7 @@ static DWORD timeGetTime_hook()
         s_start = s_prev = ret;
 
     auto diff = ret - s_prev;
-    s_progress += double(diff) * g_time_rate;
+    s_progress += double(diff) * g_time_scale;
     s_prev = ret;
 
     auto time_scaled = s_start + (DWORD)s_progress;
@@ -65,9 +65,14 @@ static DWORD timeGetTime_hook()
 
 
 
-tdAPI void tdSetTimeRate(double v)
+tdAPI void tdSetTimeScale(double v)
 {
-    g_time_rate = v;
+    g_time_scale = v;
+}
+
+tdAPI double tdGetTimeScale()
+{
+    return g_time_scale;
 }
 
 tdAPI void tdSetHooks()

@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "Foundation.h"
+#include "TimeDistorter.h"
 
 #if defined(_M_IX86)
     #define tdCoreDLL "TimeDistorterDLL32.dll"
@@ -10,7 +11,7 @@
 struct ctxFindWindowByText
 {
     HWND result = nullptr;
-    const wchar_t* text = nullptr;
+    const TCHAR* text = nullptr;
 };
 
 static BOOL CALLBACK cbFindWindowByText(HWND hwnd, LPARAM lParam)
@@ -19,7 +20,7 @@ static BOOL CALLBACK cbFindWindowByText(HWND hwnd, LPARAM lParam)
 
     wchar_t title[4096];
     ::GetWindowTextW(hwnd, title, _countof(title));
-    if (std::wcscmp(title, ctx->text)) {
+    if (_tcsstr(title, ctx->text)) {
         ctx->result = hwnd;
     }
     return TRUE;
@@ -28,6 +29,7 @@ static BOOL CALLBACK cbFindWindowByText(HWND hwnd, LPARAM lParam)
 static HWND FindWindowByText(const TCHAR* name)
 {
     ctxFindWindowByText ctx;
+    ctx.text = name;
     ::EnumWindows(&cbFindWindowByText, (LPARAM)&ctx);
     return ctx.result;
 }
@@ -76,7 +78,7 @@ static bool InjectDLL(DWORD pid, const char* dllname)
 
 int wmain(int argc, TCHAR *argv[])
 {
-    if(argc<3) {
+    if (argc < 2) {
         _tprintf(_T("usage %s /target:target_aplication.exe /patch:c:\\fulllpath\\to\\patch.dll\n"), GetMainModuleFilename().c_str());
         return 0;
     }
@@ -111,6 +113,9 @@ int wmain(int argc, TCHAR *argv[])
             }
         }
     }
+
+    //tdOpenTimeWindow();
+    //tdTimeWindowLoop();
 
     return 0;
 }

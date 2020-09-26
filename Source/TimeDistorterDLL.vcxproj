@@ -32,7 +32,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="TimeDistorter.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TimeDistorterUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TimeDistorterUI.rc" />
@@ -71,7 +70,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(SolutionDir);$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)_out\$(Platform)_$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir>$(SolutionDir)_out\$(Platform)_$(Configuration)\TimeDistorter\</OutDir>
     <IntDir>$(SolutionDir)_tmp\$(Platform)_$(Configuration)\$(ProjectName)\</IntDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
