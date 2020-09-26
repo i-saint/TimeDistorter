@@ -24,7 +24,6 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TimeDistorterSettings.cpp" />
     <ClCompile Include="TimeDistorterUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +33,11 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TimeDistorterUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="TimeDistorterDLL.vcxproj">
+      <Project>{45cafe1a-2ed4-44ca-9e3b-ca285a51f152}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{45CAFE1A-2ED4-44CA-9E3B-CA285A51F151}</ProjectGuid>

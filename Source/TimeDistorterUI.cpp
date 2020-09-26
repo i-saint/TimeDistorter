@@ -43,7 +43,6 @@ static INT_PTR CALLBACK tdTimeWindowCB(HWND hDlg, UINT msg, WPARAM wParam, LPARA
     }
 
     case WM_CLOSE:
-        tdSetTimeScale(1.0);
         ::DestroyWindow(hDlg);
         break;
 
@@ -82,7 +81,7 @@ static INT_PTR CALLBACK tdTimeWindowCB(HWND hDlg, UINT msg, WPARAM wParam, LPARA
     return ret;
 }
 
-tdAPI bool tdOpenTimeWindow()
+bool tdOpenTimeWindow()
 {
     if (!g_td_time_window) {
         g_td_time_window = ::CreateDialogParam(::GetModuleHandle(nullptr), MAKEINTRESOURCE(IDD_TIME_WINDOW), nullptr, tdTimeWindowCB, (LPARAM)nullptr);
@@ -93,7 +92,7 @@ tdAPI bool tdOpenTimeWindow()
     return false;
 }
 
-tdAPI bool tdCloseTimeWindow()
+bool tdCloseTimeWindow()
 {
     if (g_td_time_window) {
         ::PostMessage(g_td_time_window, WM_CLOSE, 0, 0);
@@ -102,7 +101,7 @@ tdAPI bool tdCloseTimeWindow()
     return false;
 }
 
-tdAPI void tdTimeWindowLoop()
+void tdTimeWindowLoop()
 {
     MSG msg;
     while (g_td_time_window && ::GetMessage(&msg, g_td_time_window, 0, 0)) {

@@ -65,7 +65,7 @@ static DWORD timeGetTime_hook()
 
 
 
-tdAPI void tdSetHooks()
+void tdSetHooks()
 {
     {
         auto mod = ::GetModuleHandleA("kernel32.dll");

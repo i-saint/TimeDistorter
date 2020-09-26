@@ -76,6 +76,10 @@ static bool InjectDLL(DWORD pid, const char* dllname)
 }
 
 
+bool tdOpenTimeWindow();
+bool tdCloseTimeWindow();
+void tdTimeWindowLoop();
+
 int wmain(int argc, TCHAR *argv[])
 {
     if (argc < 2) {
@@ -109,12 +113,8 @@ int wmain(int argc, TCHAR *argv[])
             // already loaded. just open settings dialog.
             tdOpenTimeWindow();
             tdTimeWindowLoop();
-            tdCloseSettings();
         }
         else {
-            // create shared memory for settings
-            tdCreateSettings(target_pid);
-
             auto coredllpath = std::string(GetMainModuleDirectoryA()) + "\\" + tdCoreDLL;
             if (InjectDLL(target_pid, coredllpath.c_str())) {
                 tdOpenTimeWindow();
@@ -124,8 +124,6 @@ int wmain(int argc, TCHAR *argv[])
                 printf("injection failed\n");
                 return 1;
             }
-
-            tdCloseSettings();
         }
     }
 
