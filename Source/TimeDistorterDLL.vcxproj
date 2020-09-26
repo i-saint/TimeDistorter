@@ -20,21 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Foundation.cpp" />
-    <ClCompile Include="TimeDistorter.cpp" />
     <ClCompile Include="TimeDistorterDLL.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TimeDistorterUI.cpp" />
+    <ClCompile Include="TimeDistorterHook.cpp" />
+    <ClCompile Include="TimeDistorterSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Foundation.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="TimeDistorter.h" />
     <ClInclude Include="pch.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="TimeDistorterUI.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{45CAFE1A-2ED4-44CA-9E3B-CA285A51F152}</ProjectGuid>
@@ -80,7 +77,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -96,7 +93,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/Zo %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Full</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>

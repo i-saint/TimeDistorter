@@ -87,35 +87,48 @@ int wmain(int argc, TCHAR *argv[])
     float speed = -1;
 
     for (int i = 1; i < argc; ++i) {
-        if (_tcsncmp(argv[i], L"/target:", 8)==0) {
+        if (_tcsncmp(argv[i], _T("/target:"), 8)==0) {
             const auto* name = argv[i] + 8;
             target_pid = FindProcessID(name);
         }
-        else if (_tcsncmp(argv[i], L"/targetwindow:", 14) == 0) {
+        else if (_tcsncmp(argv[i], _T("/targetwindow:"), 14) == 0) {
             const auto* window = argv[i] + 14;
             target_pid = FindProcessByWindowText(window);
         }
-        else if (_tcsncmp(argv[i], L"/targetpid:", 11) == 0) {
+        else if (_tcsncmp(argv[i], _T("/targetpid:"), 11) == 0) {
             const auto* pid = argv[i] + 11;
             target_pid = _wtoi(pid);
         }
-        else if (_tcsncmp(argv[i], L"/speed:", 7) == 0) {
+        else if (_tcsncmp(argv[i], _T("/speed:"), 7) == 0) {
             speed = (float)_wtof(argv[i] + 7);
         }
     }
 
     if (target_pid != 0) {
-        if (!IsModuleLoaded(target_pid, _T(tdCoreDLL))) {
+        if (IsModuleLoaded(target_pid, _T(tdCoreDLL))) {
+            // already loaded. just open settings dialog.
+            tdOpenTimeWindow();
+            tdTimeWindowLoop();
+            tdCloseSettings();
+        }
+        else {
+            // create shared memory for settings
+            tdCreateSettings(target_pid);
+
             auto coredllpath = std::string(GetMainModuleDirectoryA()) + "\\" + tdCoreDLL;
-            if (!InjectDLL(target_pid, coredllpath.c_str())) {
+            if (InjectDLL(target_pid, coredllpath.c_str())) {
+                tdOpenTimeWindow();
+                tdTimeWindowLoop();
+            }
+            else {
                 printf("injection failed\n");
                 return 1;
             }
+
+            tdCloseSettings();
         }
     }
 
-    //tdOpenTimeWindow();
-    //tdTimeWindowLoop();
 
     return 0;
 }
