@@ -3,6 +3,7 @@
 #include "resource.h"
 
 HWND g_td_time_window;
+HWND g_td_time_slider;
 HWND g_td_current_window;
 
 static bool CtrlIsChecked(int cid)
@@ -31,11 +32,11 @@ static INT_PTR CALLBACK tdTimeWindowCB(HWND hDlg, UINT msg, WPARAM wParam, LPARA
     switch (msg) {
     case WM_INITDIALOG:
     {
-        HWND slider = ::GetDlgItem(hDlg, IDC_SLIDER_TIME);
-        ::SendMessageA(slider, TBM_SETRANGEMIN, 0, 0);
-        ::SendMessageA(slider, TBM_SETRANGEMAX, 0, 100);
-        ::SendMessageA(slider, TBM_SETPAGESIZE, 0, 10);
-        ::SendMessageA(slider, TBM_SETPOS, 0, 10);
+        g_td_time_slider = ::GetDlgItem(hDlg, IDC_SLIDER_TIME);
+        ::SendMessageA(g_td_time_slider, TBM_SETRANGEMIN, 0, 0);
+        ::SendMessageA(g_td_time_slider, TBM_SETRANGEMAX, 0, 100);
+        ::SendMessageA(g_td_time_slider, TBM_SETPAGESIZE, 0, 5);
+        ::SendMessageA(g_td_time_slider, TBM_SETPOS, TRUE, 10);
 
         ret = TRUE;
         break;
@@ -56,18 +57,22 @@ static INT_PTR CALLBACK tdTimeWindowCB(HWND hDlg, UINT msg, WPARAM wParam, LPARA
         int cid = LOWORD(wParam);
 
         switch (cid) {
-        case IDC_SLIDER_TIME:
-            tdSetTimeScale((double)CtrlGetInt(cid, 10));
-            break;
-
         case IDOK:
             ::DestroyWindow(hDlg);
             break;
         case IDCANCEL:
             ::DestroyWindow(hDlg);
             break;
-        default: break;
+        default:
+            break;
         }
+        break;
+    }
+
+    case WM_HSCROLL:
+    {
+        double pos = (double)::SendMessageA(g_td_time_slider, TBM_GETPOS, 0, 0) / 10.0;
+        tdSetTimeScale(pos);
         break;
     }
 
