@@ -12,8 +12,8 @@ QueryPerformanceCounter_t QueryPerformanceCounter_orig;
 
 static BOOL QueryPerformanceCounter_hook(LARGE_INTEGER* lpPerformanceCount)
 {
-    static LONGLONG s_start, s_prev;
-    static double s_progress;
+    thread_local LONGLONG s_start, s_prev;
+    thread_local double s_progress;
 
     auto ret = QueryPerformanceCounter_orig(lpPerformanceCount);
     if (lpPerformanceCount) {
@@ -48,8 +48,8 @@ timeGetTime_t timeGetTime_orig;
 
 static DWORD timeGetTime_hook()
 {
-    static DWORD s_start, s_prev;
-    static double s_progress;
+    thread_local DWORD s_start, s_prev;
+    thread_local double s_progress;
 
     auto ret = timeGetTime_orig();
     if (s_start == 0)
@@ -67,6 +67,12 @@ static DWORD timeGetTime_hook()
 
 void tdSetHooks()
 {
+    auto exe = GetMainModuleFilenameA();
+    if (strstr(exe.c_str(), "TimeDistorter")) {
+        // ignore if host is injector
+        return;
+    }
+
     {
         auto mod = ::GetModuleHandleA("kernel32.dll");
         if (mod) {

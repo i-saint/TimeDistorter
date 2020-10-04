@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "TimeDistorter.h"
+#include "Foundation.h"
 
 void tdSetHooks();
 
